@@ -1,0 +1,8 @@
+api register user -> đã trả ra lỗi
+update user -> bắt token từ middleware và update user theo id ở token
+upload file -> đã update thêm
+api comment -> đã check token ở middleware jwt.checkAccessToken
+try catch ở các api: 
+do dùng try catch nhiều lần nên tách ra 1 hàm riêng để tái sử dụng,
+triển khai khác (do dùng promise) nhưng bản chất vẫn là bắt lỗi
+xem lại tryCatch.js ở helpers để biết thêm chi tiết

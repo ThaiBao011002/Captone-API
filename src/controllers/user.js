@@ -11,8 +11,13 @@ module.exports.getMe = tryCatch(async (req, res, next) => {
 });
 
 module.exports.register = tryCatch(async (req, res, next) => {
-  let data = await userModel.create(req.body);
-  res.status(201).json(responseSuccess(data));
+  let user = await userModel.findOne({ where: { email: req.body.email } });
+  if (user) {
+    next(new AppError(400, CONSTANT_MESSAGES.EMAIL_IS_EXISTED));
+  } else {
+    let data = await userModel.create(req.body);
+    res.status(201).json(responseSuccess(data));
+  }
 });
 
 module.exports.login = tryCatch(async (req, res, next) => {
@@ -34,9 +39,7 @@ module.exports.login = tryCatch(async (req, res, next) => {
 });
 
 module.exports.updateMe = tryCatch(async (req, res, next) => {
-  if (req.body.status) delete req.body.status;
   if (req.body.password) delete req.body.password;
-
   let data = await userModel.update(req.body, { where: { id: req.user.id } });
   if (data[0] === 1) {
     data = await userModel.findOne({ where: { id: req.user.id } });
